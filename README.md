@@ -56,7 +56,7 @@ Login to the slave server. Make sure docker is installed. Clone this repo.
 
 Move the master database dump into the /docker-entrypoint-initdb.d directory and rename it to dump.sql.
 
-Create a file start.sh in /docker-entrypoint-initdb.d with the following content. Replace values for MASTER_LOG_FILE and MASTER_LOG_POS with the values from the master db status. Replace MASTER_HOST with the host's name or IP address.
+Create a file start.sql in /docker-entrypoint-initdb.d with the following content. Replace values for MASTER_LOG_FILE and MASTER_LOG_POS with the values from the master db status. Replace MASTER_HOST with the host's name or IP address.
 
 ```
 CHANGE MASTER TO MASTER_HOST='host.docker.internal', MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=154;
