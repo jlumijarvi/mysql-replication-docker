@@ -27,7 +27,16 @@ Restart the mysql server.
 sudo service mysql restart
 ```
 
-Open the MySQL shell. Grant replication priviledges to the slave use, lock the databases and print the master's status.
+Open the MySQL shell. 
+
+If needed create a new readonly db user in in order to access the slave database outside its container.
+
+```
+GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
+```
+
+Grant replication priviledges to the slave use, lock the databases and print the master's status.
 
 ```
 mysql -u root -p
@@ -52,7 +61,7 @@ EXIT;
 
 ### Slave configuration
 
-Login to the slave server. Make sure docker is installed. Clone this repo.
+Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) is installed. Clone this repo.
 
 Move the master database dump into the /docker-entrypoint-initdb.d directory and rename it to dump.sql.
 
@@ -63,15 +72,10 @@ CHANGE MASTER TO MASTER_HOST='host.docker.internal', MASTER_USER='slave_user', M
 START SLAVE;
 ```
 
-Start the slave container.
+Copy .env.example into .env. Update the MYSQL_ROOT_PASSWORD with a proper root password.
+
+Start the slave container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data.
 
 ```
 docker-compose up -d
-```
-
-If needed create a new db user in the master database in order to access the slave database outside its container.
-
-```
-GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
 ```
