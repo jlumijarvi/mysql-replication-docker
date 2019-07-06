@@ -36,7 +36,7 @@ GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 ```
 
-Grant replication priviledges to the slave use, lock the databases and print the master's status.
+Grant replication priviledges to the slave user, lock the databases and print the master's status.
 
 ```
 mysql -u root -p
