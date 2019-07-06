@@ -67,11 +67,11 @@ Move the master database dump into the /docker-entrypoint-initdb.d directory and
 
 Copy .env.example into .env and set the variables in the file.
 
+Set the host's name or IP address into MASTER_HOST. If the master and the slave are in the same server use host.docker.internal.
+
 Set MASTER_USER and MASTER_PASSWORD according to the master db's slave user credentials configured in the earlier step.
 
 Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master status.
-
-Set the host's name or IP address into MASTER_HOST. If the master and the slave are in the same server use host.docker.internal.
 
 Start the slave container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data. Note that the MYSQL_ROOT_PASSWORD defined in .env is not valid anymore. Use the master db's credentials to access the slave.
 
