@@ -1,10 +1,8 @@
 ## Mysql replication into a slave in docker
 
-Based on this article https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-in-mysql
-
 ### Master configuration
 
-Open up the config file.
+Open the config file.
 
 ```
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
@@ -29,7 +27,7 @@ Restart the mysql server.
 sudo service mysql restart
 ```
 
-Open up the MySQL shell. Grant replications priviledges to the slave, lock the databases and print the master's status.
+Open the MySQL shell. Grant replication priviledges to the slave use, lock the databases and print the master's status.
 
 ```
 mysql -u root -p
@@ -49,7 +47,6 @@ Unlock the databases in the original shell window. Keep the master status in the
 
 ```
 UNLOCK TABLES;
-SET GLOBAL read_only = OFF;
 EXIT;
 ```
 
