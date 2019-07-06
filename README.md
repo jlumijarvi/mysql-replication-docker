@@ -8,7 +8,7 @@ Open the config file.
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-Replace the bind address with the IP address of the server. If the master and the slave will be in the same server leave it as 127.0.0.1.
+Replace the bind address with the IP address of the server. If the master and the slave(s) will be in the same server it can be left as 127.0.0.1.
 
 ```
 bind-address            = 127.0.0.1
