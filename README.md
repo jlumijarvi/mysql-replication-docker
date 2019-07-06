@@ -8,7 +8,7 @@ Open the config file.
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-Replace the bind address with the IP address of the server. If the slave is in the same server as the master leave it as 127.0.0.1.
+Replace the bind address with the IP address of the server. If the master and the slave will be in the same server leave it as 127.0.0.1.
 
 ```
 bind-address            = 127.0.0.1
@@ -36,7 +36,7 @@ GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 ```
 
-Grant replication priviledges to the slave user, lock the databases and print the master's status.
+Grant replication privileges to the slave user, lock the databases and print the master's status.
 
 ```
 mysql -u root -p
@@ -52,7 +52,7 @@ Open a new shell window and export the databases with mysqldump or use other too
 mysqldump -u root -p --all-databases > dump.sql
 ```
 
-Unlock the databases in the original shell window. Keep the master status in the screen.
+In the original shell window unlock the databases. Keep the master status in the console.
 
 ```
 UNLOCK TABLES;
@@ -69,11 +69,11 @@ Copy .env.example into .env and set the variables in the file.
 
 Set MASTER_USER and MASTER_PASSWORD according to the master db's slave user credentials configured in the earlier step.
 
-Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master db status.
+Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master status.
 
 Set the host's name or IP address into MASTER_HOST. If the master and the slave are in the same server use host.docker.internal.
 
-Start the slave container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data.
+Start the slave container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data. Note that the MYSQL_ROOT_PASSWORD defined in .env is not valid anymore. Use the master db's credentials to access the slave.
 
 ```
 docker-compose up -d
