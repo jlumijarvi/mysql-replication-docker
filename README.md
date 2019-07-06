@@ -1,5 +1,7 @@
 ## Mysql replication into a slave in docker
 
+Based on this article https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-in-mysql
+
 ### Master configuration
 
 Open up the config file.
