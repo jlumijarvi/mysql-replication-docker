@@ -68,7 +68,7 @@ mysqldump -u root -p --all-databases | gzip > dump.gz
 
 Export can be done also in the slave server. Follow the steps in [Master server firewall configuration](#master-server-firewall-configuration) to allow access from the slave to the master.
 
-Login to the slave server and export the master databases with mysqldump. Mysql client utils need to be installed.
+Login to the slave server and export the master databases with mysqldump. MySQL client utils need to be installed.
 
 ```
 sudo apt install mysql-client-5.7
