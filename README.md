@@ -58,7 +58,7 @@ mysqldump -u root -p --all-databases > dump.sql
 or gzipped.
 
 ```
-mysqldump -u root -p --all-databases | gzuo > dump.gz
+mysqldump -u root -p --all-databases | gzip > dump.gz
 ```
 
 In the original shell window unlock the databases. Keep the master status in the console.
@@ -72,6 +72,22 @@ EXIT;
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) is installed. Clone this repo.
 
+Docker containers bypass firewalls by default so in case using ufw or similar create custom deamon configuration.
+
+```
+sudo nano /etc/docker/daemon.js
+```
+
+```
+{
+        "iptables": false
+}
+```
+
+```
+sudo service docker restart
+```
+
 Move the master database dump into the /docker-entrypoint-initdb.d directory, unzip if needed and rename it to dump.sql.
 
 Copy .env.example into .env and set the variables in the file.
@@ -84,4 +100,23 @@ Start the container. Slave starts running at port 3307. The container's MySQL da
 
 ```
 docker-compose up -d
+```
+
+### Master server firewall configuration
+
+Allow MySQL access from the slave to the master.
+
+If the slave is in another server get the server's public IP address.
+
+If the slave in the same server check the slave container network's IP address. 
+
+```
+docker inspect slave_db --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+```
+
+Add ufw rule.
+
+```
+sudo ufw allow from <slave IP address> to any port 3306
+sudo ufw reload
 ```
