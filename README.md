@@ -70,7 +70,7 @@ EXIT;
 
 ### Slave configuration
 
-Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) is installed. Clone this repo.
+Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
 
 Docker containers bypass firewalls by default so in case using ufw or similar create custom deamon configuration.
 
