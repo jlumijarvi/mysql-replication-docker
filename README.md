@@ -29,6 +29,10 @@ sudo service mysql restart
 
 Open the MySQL shell. 
 
+```
+mysql -u root -p
+```
+
 If needed create a new readonly db user in in order to access the slave database outside its container.
 
 ```
@@ -39,7 +43,6 @@ FLUSH PRIVILEGES;
 Grant replication privileges to the slave user, lock the databases and print the master's status.
 
 ```
-mysql -u root -p
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 FLUSH TABLES WITH READ LOCK;
@@ -50,6 +53,12 @@ Open a new shell window and export the databases with mysqldump or use other too
 
 ```
 mysqldump -u root -p --all-databases > dump.sql
+```
+
+or gzipped.
+
+```
+mysqldump -u root -p --all-databases | gzuo > dump.gz
 ```
 
 In the original shell window unlock the databases. Keep the master status in the console.
@@ -63,7 +72,7 @@ EXIT;
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) is installed. Clone this repo.
 
-Move the master database dump into the /docker-entrypoint-initdb.d directory and rename it to dump.sql.
+Move the master database dump into the /docker-entrypoint-initdb.d directory, unzip if needed and rename it to dump.sql.
 
 Copy .env.example into .env and set the variables in the file.
 
