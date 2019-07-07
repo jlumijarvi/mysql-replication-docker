@@ -1,5 +1,7 @@
 ## Mysql replication into a slave in docker
 
+The tutorial assumes that there is a running master database server. The steps have been tested with MySQL version 5.7.
+
 ### Master configuration
 
 Open the config file.
@@ -8,7 +10,7 @@ Open the config file.
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-Replace the bind address with the IP address of the server. In local environments it can be left as 127.0.0.1.
+Replace the bind address with the public IP address of the server. In local environments it can be left as 127.0.0.1.
 
 ```
 bind-address            = 127.0.0.1
@@ -21,7 +23,7 @@ server-id               = 1
 log_bin                 = /var/log/mysql/mysql-bin.log 
 ```
 
-Restart the mysql server.
+Restart the MySQL server.
 
 ```
 sudo service mysql restart
@@ -33,18 +35,17 @@ Open the MySQL shell.
 mysql -u root -p
 ```
 
-If needed create a new readonly db user in in order to access the slave database outside its container.
-
-```
-GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
-```
-
-Grant replication privileges to the slave user, lock the databases and print the master's status.
+Grant replication privileges to the slave user. Create also a readonly user. Grant LOCK TABLES privilege if the database export will be done in the slave server.
 
 ```
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
+GRANT SELECT, LOCK TABLES on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
+```
+
+Lock the databases and print the master's status.
+
+```
 FLUSH TABLES WITH READ LOCK;
 SHOW MASTER STATUS;
 ```
@@ -61,10 +62,20 @@ or gzipped.
 mysqldump -u root -p --all-databases | gzip > dump.gz
 ```
 
-In the original shell window unlock the databases. Keep the master status in the console.
+Export can be done also in the slave server. Follow the steps in [Master server firewall configuration](#master-server-firewall-configuration) to allow access from the slave to the master.
+
+Login to the slave server and export the master databases with mysqldump.
+
+```
+mysqldump -h <master IP address> -u readonly -p --all-databases > dump.sql
+```
+
+In the original shell window unlock the databases. If LOCK TABLES privilege was granted to the readonly user, remove it now. Exit the MySQL shell. Keep the master status visible in the console.
 
 ```
 UNLOCK TABLES;
+GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
 EXIT;
 ```
 
@@ -88,11 +99,11 @@ docker-compose up -d
 
 ### Master server firewall configuration
 
-In other than local environments the firewall should configured to allow MySQL access from the slave to the master.
+In other than local environments the firewall should be configured to allow MySQL access from the slave to the master.
 
 If the slave is in another server get the server's public IP address.
 
-If the slave in the same server check the slave container network's IP address. 
+If the slave is in the same server check the slave container network's IP address. 
 
 ```
 docker inspect slave_db --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
