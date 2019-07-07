@@ -1,6 +1,6 @@
 ## MySQL Master-Slave replication into a slave in docker
 
-This tutorial has the following prequisities:
+This tutorial has the following prerequisites:
 
 - a running MySQL master database server
 - MySQL version 5.7
@@ -43,7 +43,7 @@ Grant replication privileges to the slave user. Create also a readonly user. Gra
 
 ```
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
-GRANT SELECT, LOCK TABLES on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
+GRANT SELECT, LOCK TABLES ON *.* TO 'readonly'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 ```
 
@@ -79,7 +79,7 @@ In the original shell window unlock the databases. If LOCK TABLES privilege was 
 
 ```
 UNLOCK TABLES;
-GRANT SELECT on *.* to 'readonly'@'%' IDENTIFIED BY 'password';
+REVOKE LOCK TABLES ON *.* FROM 'readonly'@'%';
 FLUSH PRIVILEGES;
 EXIT;
 ```
