@@ -104,7 +104,7 @@ docker-compose up -d
 
 ### Master server firewall configuration
 
-Allow MySQL access from the slave to the master.
+In other than local environments where a firewall such us afw is used allow MySQL access from the slave to the master.
 
 If the slave is in another server get the server's public IP address.
 
