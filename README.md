@@ -72,7 +72,7 @@ EXIT;
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
 
-Docker containers bypass firewalls by default so in case using ufw or similar create custom deamon configuration.
+Docker containers bypass firewalls by default so in case using ufw or similar create custom deamon configuration. Restart the server.
 
 ```
 sudo nano /etc/docker/daemon.js
@@ -82,10 +82,6 @@ sudo nano /etc/docker/daemon.js
 {
         "iptables": false
 }
-```
-
-```
-sudo service docker restart
 ```
 
 Move the master database dump into the /docker-entrypoint-initdb.d directory, unzip if needed and rename it to dump.sql.
