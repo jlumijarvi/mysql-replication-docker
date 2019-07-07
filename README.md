@@ -1,10 +1,14 @@
-## Mysql replication into a slave in docker
+## MySQL Master-Slave replication into a slave in docker
 
-The tutorial assumes that there is a running master database server. The steps have been tested with MySQL version 5.7.
+This tutorial has the following prequisities:
 
-### Master configuration
+- a running MySQL master database server
+- MySQL version 5.7
+- Ubuntu 18 or Windows 10 as a host for the docker container
 
-Open the config file.
+### Master server configuration
+
+Login to the master server. Open the config file.
 
 ```
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
@@ -64,9 +68,10 @@ mysqldump -u root -p --all-databases | gzip > dump.gz
 
 Export can be done also in the slave server. Follow the steps in [Master server firewall configuration](#master-server-firewall-configuration) to allow access from the slave to the master.
 
-Login to the slave server and export the master databases with mysqldump.
+Login to the slave server and export the master databases with mysqldump. Mysql client utils need to be installed.
 
 ```
+sudo apt install mysql-client-5.7
 mysqldump -h <master IP address> -u readonly -p --all-databases > dump.sql
 ```
 
