@@ -72,18 +72,6 @@ EXIT;
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
 
-Docker containers bypass firewalls by default so in case using ufw or similar create custom deamon configuration. Restart the server.
-
-```
-sudo nano /etc/docker/daemon.js
-```
-
-```
-{
-        "iptables": false
-}
-```
-
 Move the master database dump into the /docker-entrypoint-initdb.d directory, unzip if needed and rename it to dump.sql.
 
 Copy .env.example into .env and set the variables in the file.
@@ -100,7 +88,7 @@ docker-compose up -d
 
 ### Master server firewall configuration
 
-In other than local environments where a firewall such us ufw is used allow MySQL access from the slave to the master.
+In other than local environments the firewall should configured to allow MySQL access from the slave to the master.
 
 If the slave is in another server get the server's public IP address.
 
