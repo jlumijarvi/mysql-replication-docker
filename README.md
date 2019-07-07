@@ -39,7 +39,7 @@ Open the MySQL shell.
 mysql -u root -p
 ```
 
-Grant replication privileges to the slave user. Create also a readonly user. Grant LOCK TABLES privilege if the database export will be done in the slave server.
+Grant replication privileges to the slave user. Create also a readonly user. Grant LOCK TABLES privileges if the database export will be done in the slave server.
 
 ```
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
@@ -75,7 +75,7 @@ sudo apt install mysql-client-5.7
 mysqldump -h <master IP address> -u readonly -p --all-databases > dump.sql
 ```
 
-In the original shell window unlock the databases. If LOCK TABLES privilege was granted to the readonly user, remove it now. Exit the MySQL shell. Keep the master status visible in the console.
+In the original shell window unlock the databases. If LOCK TABLES privileges were granted to the readonly user, remove them now. Exit the MySQL shell. Keep the master status visible in the console.
 
 ```
 UNLOCK TABLES;
@@ -84,7 +84,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-### Slave configuration
+### Slave server configuration
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
 
