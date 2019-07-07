@@ -84,7 +84,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-### Slave configuration
+### Slave server configuration
 
 Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
 
