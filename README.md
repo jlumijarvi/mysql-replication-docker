@@ -8,7 +8,7 @@ Open the config file.
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-Replace the bind address with the IP address of the server. If the master and the slave(s) will be in the same server it can be left as 127.0.0.1.
+Replace the bind address with the IP address of the server. In local environments it can be left as 127.0.0.1.
 
 ```
 bind-address            = 127.0.0.1
@@ -92,7 +92,7 @@ Move the master database dump into the /docker-entrypoint-initdb.d directory, un
 
 Copy .env.example into .env and set the variables in the file.
 
-- Set the host's name or IP address into MASTER_HOST. If the master and the slave are in the same server use host.docker.internal.
+- Set the host's name or IP address into MASTER_HOST. In local environments with Mac or Windows set it to host.docker.internal.
 - Set MASTER_USER and MASTER_PASSWORD according to the master db's slave user credentials configured in the earlier step.
 - Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master status.
 
