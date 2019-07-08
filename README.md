@@ -3,6 +3,7 @@
 This tutorial has the following prerequisites:
 
 - a running MySQL master database server
+- a fresh server for the slave with [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
 - MySQL version 5.7
 - Ubuntu 18 or Windows 10 as a host for the docker container
 
@@ -86,7 +87,7 @@ EXIT;
 
 ### Slave server configuration
 
-Login to the slave server. Make sure [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed. Clone this repo.
+Login to the slave server. Clone this repo.
 
 Move the master database dump into the /docker-entrypoint-initdb.d directory, unzip if needed and rename it to dump.sql.
 
