@@ -111,7 +111,7 @@ docker-compose up -d
 
 In other than local environments the firewall should be configured to allow MySQL access from the slave to the master.
 
-If the slave is in another server get the server's public IP address.
+If the slave is in another server get the server's IP address.
 
 If the slave is in the same server check the slave container network's IP address. 
 
