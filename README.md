@@ -44,27 +44,25 @@ Grant replication privileges to the slave user. Create also a readonly user. Gra
 
 ```
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
-GRANT SELECT, LOCK TABLES ON *.* TO 'readonly'@'%' IDENTIFIED BY 'password';
+GRANT SELECT ON *.* TO 'readonly'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 ```
 
-Lock the databases and print the master's status.
+Export the databases with mysqldump.
 
 ```
-FLUSH TABLES WITH READ LOCK;
-SHOW MASTER STATUS;
+MYSQL_CONN="-uroot -ppassword"
+MYSQLDUMP_OPTIONS="--master-data=1 --single-transaction --flush-privileges --routines --triggers --all-databases"
 ```
 
-Open a new shell window and export the databases with mysqldump or use other tool.
-
 ```
-mysqldump -u root -p --all-databases > dump.sql
+mysqldump ${MYSQL_CONN} ${MYSQLDUMP_OPTIONS} > dump.sql 
 ```
 
 or gzipped.
 
 ```
-mysqldump -u root -p --all-databases | gzip > dump.gz
+mysqldump ${MYSQL_CONN} ${MYSQLDUMP_OPTIONS} | gzip > dump.sql.gz
 ```
 
 Transfer the dump file to the slave server.
@@ -77,16 +75,12 @@ Export can be done also in the slave server. Follow the steps in [Master server 
 
 ```
 sudo apt install mysql-client-5.7
-mysqldump -h <master IP address> -u readonly -p --all-databases > dump.sql
 ```
 
-In the original shell window unlock the databases. If LOCK TABLES privileges were granted to the readonly user, remove them now. Exit the MySQL shell. Keep the master status visible in the console.
-
 ```
-UNLOCK TABLES;
-REVOKE LOCK TABLES ON *.* FROM 'readonly'@'%';
-FLUSH PRIVILEGES;
-EXIT;
+MYSQL_CONN="-uroot -ppassword"
+MYSQLDUMP_OPTIONS="--master-data=1 --single-transaction --flush-privileges --routines --triggers --all-databases"
+mysqldump -h <master IP address> ${MYSQL_CONN} ${MYSQLDUMP_OPTIONS} > dump.sql
 ```
 
 ### Slave server configuration
@@ -98,10 +92,14 @@ Move the master database dump into the /docker-entrypoint-initdb.d directory, un
 Copy .env.example into .env and set the variables in the file.
 
 - Set the host's name or IP address into MASTER_HOST. In local environments with Mac or Windows set it to host.docker.internal.
+- Set MYSQL_ROOT_PASSWORD according to the root password of the master database
 - Set MASTER_USER and MASTER_PASSWORD according to the master db's slave user credentials configured in the earlier step.
-- Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master status.
+- Set MASTER_LOG_FILE and MASTER_LOG_POS based on the values from the master status. Get the values from dump.sql with the following command:
+    ```
+    head -22 dump.sql | tail -1
+    ```
 
-Start the container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data. Note that the MYSQL_ROOT_PASSWORD defined in .env is not valid anymore. Use the master db's credentials to access the slave.
+Start the container. Slave starts running at port 3307. The container's MySQL data directory /var/lib/mysql will be mounted into /data. Use the master db's credentials to access the slave.
 
 ```
 docker-compose up -d
