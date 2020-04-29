@@ -5,7 +5,7 @@ This tutorial has the following prerequisites:
 - a running MySQL master database server
 - a fresh server for the slave with [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
 - MySQL version 5.7
-- Ubuntu 18 or Windows 10 as a host for the docker container
+- Ubuntu 18, Debian 10 or Windows 10 as a host for the docker container
 
 ### Master server configuration
 
