@@ -14,5 +14,7 @@ services:
       - ./conf.d:/etc/mysql/conf.d
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
+      - mysql_logs:/var/log/mysql
 volumes:
   mysql_data:
+  mysql_logs:
